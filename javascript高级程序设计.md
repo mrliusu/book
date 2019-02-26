@@ -1,0 +1,28 @@
+# javascript高级程序设计
+
+- 任何表单中有提交按钮，按回车键会直接提交表单
+- 调用form.submit()方法提交表单不会触发submit事件，所以调用submit之前需要验证数据有效性（所以是submit事件验证的数据有效性吗？）
+  - 经测试
+  - 点击按钮的时候，会先经过数据验证（比如type=email的验证）
+  - 然后会触发submit事件，也就是说，验证不通过，不会触发监听的submit事件
+  - 在submit事件处理完之后，会提交表单；可以在submit事件中拦截提交操作
+  - 另外，直接使用form.submit()方法提交表单，不会触发监听的submit事件
+  - 另外，如果在type=submit的按钮上绑定click事件，并且在绑定的方法里面使用form.submit()事件，会先响应click事件，直接提交表单
+  - 所以，也是因为这个响应顺序，可以在添加的事件里面拦截默认事件
+- form[0]与form.elements[0]相同，建议使用elements；form.elements['name']如果有两个name元素相同的会拿到一个nodeList
+- H5添加的表单type属性有color、date、datatime、datatime-local、month、week、time、email、number、range、search、tel、url；以上有些是有特殊控件有些是有格式的验证
+- blur与change事件的触发顺序不同浏览器，时间不一样
+- 修改input跟testarea的值的时候，直接input.value = ‘new value';不要使用dom方法setAttribute(),因为不一定会反映到dom中
+- input.select()选择输入框的文本，会触发select事件
+- input.selectionStart没实现这个功能
+  - input.selectionStart对于input和textarea来说是可以设置的，设置选择的初始位置
+  - textarea.selectStatr可读取，会返回选中的文本的开始索引
+- input.setSelectionRange(start, end)选中部分文本，调用之前或者之后需要将焦点立即设置到文本框，不然看不到选择的文本
+  - ie8以及更早的版本，使用var range = input.createTextRange()方法创建一个范围
+  - 然后range.collapse(true) 选择所有文本
+  - range.moveStart('character', 0) 移到开头
+  - range.moveEnd('character', 3) 移动到结尾
+  - range.select() 选择
+  - 也需要文本框获得焦点，才能在页面上看到
+- 过滤用户输入的时候，可以检测keypress事件，然后event.preventDefault()
+  - 不用每次检测输入的值，然后替换
