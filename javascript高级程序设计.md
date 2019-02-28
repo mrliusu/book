@@ -1,5 +1,6 @@
 # javascript高级程序设计
 
+## 14章 表单脚本
 - 任何表单中有提交按钮，按回车键会直接提交表单
 - 调用form.submit()方法提交表单不会触发submit事件，所以调用submit之前需要验证数据有效性（所以是submit事件验证的数据有效性吗？）
   - 经测试
@@ -10,7 +11,6 @@
   - 另外，如果在type=submit的按钮上绑定click事件，并且在绑定的方法里面使用form.submit()事件，会先响应click事件，直接提交表单
   - 所以，也是因为这个响应顺序，可以在添加的事件里面拦截默认事件
 - form[0]与form.elements[0]相同，建议使用elements；form.elements['name']如果有两个name元素相同的会拿到一个nodeList
-- H5添加的表单type属性有color、date、datatime、datatime-local、month、week、time、email、number、range、search、tel、url；以上有些是有特殊控件有些是有格式的验证
 - blur与change事件的触发顺序不同浏览器，时间不一样
 - 修改input跟testarea的值的时候，直接input.value = ‘new value';不要使用dom方法setAttribute(),因为不一定会反映到dom中
 - input.select()选择输入框的文本，会触发select事件
@@ -26,3 +26,34 @@
   - 也需要文本框获得焦点，才能在页面上看到
 - 过滤用户输入的时候，可以检测keypress事件，然后event.preventDefault()
   - 不用每次检测输入的值，然后替换
+> 2019-02-26 add
+- 操作剪贴板
+  - beforecopy/copy/beforecut/cur/beforepaste/paste
+  - chrome浏览器，在输入框中的boforepaste不触发
+    - event.clipboardData只有在paste事件中才有值,在ie中clipboardData的值在window中;window.clipboardData
+    - 通过clipboardData.getData('text')可以获取到剪贴板的文本内容
+- H5的约束验证API
+  - required必填
+  - H5添加的表单type属性有color、date、datatime、datatime-local、month、week、time、email、number、range、search、tel、url；以上有些是有特殊控件有些是有格式的验证
+  - pattern属性用来判定输入是否准确
+  - submit的时候，会触发表单验证；同时可以使用input.checkValidity()检测是否输入有效（针对表单设置的格式）
+  - 也可以form.checkValidity()所有的字段都有效才会返回true
+  - 表单添加novalidate可以不验证表单，字段添加formnovalidate可以不验证字段
+### 选择框脚本
+- HTMLSelectElement添加的方法
+   - add添加option；add(option[, index/option])第二个参数需要插入的索引或者option的前面
+   - multiple是否多选
+   - options所有选项
+   - remove(index)移除选项
+   - selectedIndex选中的idnex
+   - size可见的行数
+- option中如果不指定value值，则选中之后其值等于文本;(设置为空字符串值就是空字符串；不设置这个属性才是等于文本)
+- HTMLOptionElement对象属性
+  - index在集合中的索引、label相当于input的label、selected、text、value
+- 在选框中，只要选了选项，change事件就会触发
+- select.selected只能选择一项，在多选中也会取消掉其他的选择项；再多选中也只会返回第一个选中的项
+- option.selected = true可以选择多项，在单选中会取消其他的选项
+- 多选只能循环判定是否选中
+- 添加选项select.add(new Option('text', 'value'))
+  - 使用new Option('text', 'value')构建option对象
+- 使用select.removeChild(option)移除；或者select.remove(index)方法移除；或者select.options[index] = null移除
